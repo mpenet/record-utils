@@ -1,5 +1,5 @@
 (defproject record-utils "1.0.0"
-  :description "Some general purposes utielities for clojure records"
+  :description "Improvements for Records"
   :author "Max Penet max.penet@gmail.com"
 
   :dependencies [[org.clojure/clojure "1.2.0"]
