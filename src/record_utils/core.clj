@@ -1,15 +1,24 @@
 (ns record-utils.core
   "A bunch of utils for dealing with records"
-  (:use [clojure.contrib.str-utils :only [re-gsub]]))
+   (:use [clojure.contrib.string :only [lower-case]]))
+
+(defn camel-to-dashed
+  "Convert a name like 'BigBlueCar' to 'big-blue-car'."
+  [s]
+  (let [parts (drop-last (re-seq #"[A-Z]?[a-z]*" s))]
+    (if (= 1 (count parts))
+      (-> parts first lower-case)
+      (->> parts
+           (interpose "-")
+           (apply str)
+           lower-case))))
 
 (defn- ctor-symbol
   "Returns dashed name for the record constructor
    ex: PersonOfInterest  make-person-of-interest"
   [type-name]
   (symbol
-   (str "make" (re-gsub  #"[A-Z]"
-                         #(format "-%s" (.toLowerCase  %))
-                         (str type-name)))))
+   (str "make-" (-> type-name str camel-to-dashed))))
 
 (defmacro make-record-ctor
   "Returns a new constructor accepting a map as record parameters"
