@@ -23,11 +23,8 @@
 (defmacro make-record-ctor
   "Returns a new constructor accepting a map as record parameters"
   [type-name ctor-name fields]
-  (let [signature (reduce (fn [p n]
-                            (assoc p (-> n name symbol)
-                                   (keyword n))) {} fields)]
-    `(defn ~ctor-name [~signature]
-       (new ~type-name ~@fields))))
+  `(defn ~ctor-name [{:keys ~fields}]
+     (new ~type-name ~@fields)))
 
 (defmacro prepare-def-record
   ([type-name fields]
